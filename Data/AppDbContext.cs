@@ -1,0 +1,25 @@
+﻿using Microsoft.EntityFrameworkCore;
+using ServiceRepairComputer.Models;
+using Warehouse_API.Models;
+
+namespace Warehouse_API.Data
+{
+    public class AppDBContext:DbContext
+    {
+       public  AppDBContext(DbContextOptions<AppDBContext> options) : base(options) { }
+        
+       public DbSet<Division> Divisions { get; set; }
+       public DbSet<IncomingStock> IncomingStocks { get; set;}
+       public DbSet<OutgoingStock> OutgoingStocks { get; set;}
+       public DbSet<Position> Positions { get; set; }
+       public DbSet<Product> Products { get; set; }
+       public DbSet<Users> Users { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Product>()
+                .Property(p => p.UnitPrice)
+                .HasColumnType("decimal(18, 4)");
+        }
+    }
+}
