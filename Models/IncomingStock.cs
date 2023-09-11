@@ -7,7 +7,7 @@ namespace Warehouse_API.Models
     public class IncomingStock
     {
         [Key]
-        public int Id { get; set; }
+        public int ID { get; set; }
         [MaxLength(10)]       
         public string? IncomingStockID { get; set; }
         [MaxLength(10)]

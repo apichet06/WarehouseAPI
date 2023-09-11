@@ -12,8 +12,8 @@ using Warehouse_API.Data;
 namespace Warehouse_API.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20230909092942_udpateProduct")]
-    partial class udpateProduct
+    [Migration("20230911021611_AddTableWHDB")]
+    partial class AddTableWHDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,11 @@ namespace Warehouse_API.Migrations
 
             modelBuilder.Entity("ServiceRepairComputer.Models.Division", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("DV_ID")
                         .HasMaxLength(10)
@@ -41,18 +41,53 @@ namespace Warehouse_API.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
                     b.ToTable("Divisions");
                 });
 
-            modelBuilder.Entity("Warehouse_API.Models.IncomingStock", b =>
+            modelBuilder.Entity("Warehouse_API.Models.ApprovalRequest", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<int>("ApprovalRequestID")
+                        .HasMaxLength(10)
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ProductID")
+                        .HasMaxLength(10)
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasMaxLength(10)
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RequestDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserID")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Approvals");
+                });
+
+            modelBuilder.Entity("Warehouse_API.Models.IncomingStock", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("IncomingStockID")
                         .HasMaxLength(10)
@@ -73,18 +108,18 @@ namespace Warehouse_API.Migrations
                     b.Property<DateTime>("ReceivedDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
                     b.ToTable("IncomingStocks");
                 });
 
             modelBuilder.Entity("Warehouse_API.Models.OutgoingStock", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("OutgoingStockID")
                         .HasMaxLength(10)
@@ -98,6 +133,9 @@ namespace Warehouse_API.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("int");
 
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18, 4)");
+
                     b.Property<string>("WithdrawnBy")
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
@@ -105,18 +143,18 @@ namespace Warehouse_API.Migrations
                     b.Property<DateTime>("WithdrawnDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
                     b.ToTable("OutgoingStocks");
                 });
 
             modelBuilder.Entity("Warehouse_API.Models.Position", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("DV_ID")
                         .HasMaxLength(10)
@@ -130,18 +168,18 @@ namespace Warehouse_API.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
                     b.ToTable("Positions");
                 });
 
             modelBuilder.Entity("Warehouse_API.Models.Product", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("PImages")
                         .HasMaxLength(500)
@@ -163,9 +201,9 @@ namespace Warehouse_API.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("int");
 
-                    b.Property<string>("QtyMin")
+                    b.Property<int>("QtyMinimumStock")
                         .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("ReceiveAt")
                         .HasColumnType("datetime2");
@@ -175,23 +213,23 @@ namespace Warehouse_API.Migrations
                         .HasColumnType("nvarchar(10)");
 
                     b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18, 4)");
 
                     b.Property<DateTime?>("lastAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
                     b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Warehouse_API.Models.Users", b =>
                 {
-                    b.Property<int>("UserID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("DV_ID")
                         .HasMaxLength(10)
@@ -217,11 +255,15 @@ namespace Warehouse_API.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("UserID")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
                     b.Property<string>("Username")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("UserID");
+                    b.HasKey("ID");
 
                     b.ToTable("Users");
                 });

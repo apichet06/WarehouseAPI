@@ -14,12 +14,13 @@ namespace Warehouse_API.Data
        public DbSet<Position> Positions { get; set; }
        public DbSet<Product> Products { get; set; }
        public DbSet<Users> Users { get; set; }
+       public DbSet<ApprovalRequest> Approvals { get; set; } 
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+       /* protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>()
                 .Property(p => p.UnitPrice)
                 .HasColumnType("decimal(18, 4)");
-        }
+        }*/
     }
 }

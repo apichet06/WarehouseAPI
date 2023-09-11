@@ -6,30 +6,48 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Warehouse_API.Migrations
 {
     /// <inheritdoc />
-    public partial class addTableWhDB : Migration
+    public partial class AddTableWHDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Approvals",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ApprovalRequestID = table.Column<int>(type: "int", maxLength: 10, nullable: false),
+                    UserID = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    ProductID = table.Column<int>(type: "int", maxLength: 10, nullable: false),
+                    Quantity = table.Column<int>(type: "int", maxLength: 10, nullable: false),
+                    RequestDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsApproved = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Approvals", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Divisions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DV_ID = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     DV_Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Divisions", x => x.Id);
+                    table.PrimaryKey("PK_Divisions", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
                 name: "IncomingStocks",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IncomingStockID = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     ProductID = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
@@ -39,31 +57,32 @@ namespace Warehouse_API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IncomingStocks", x => x.Id);
+                    table.PrimaryKey("PK_IncomingStocks", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
                 name: "OutgoingStocks",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OutgoingStockID = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     ProductID = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     QTYWithdrawn = table.Column<int>(type: "int", maxLength: 10, nullable: false),
-                    WithdrawalDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UnitPrice = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
+                    WithdrawnDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     WithdrawnBy = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OutgoingStocks", x => x.Id);
+                    table.PrimaryKey("PK_OutgoingStocks", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Positions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     P_ID = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     P_Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
@@ -71,37 +90,38 @@ namespace Warehouse_API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Positions", x => x.Id);
+                    table.PrimaryKey("PK_Positions", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductID = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     ProductName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     ProductDescription = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     PImages = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    QtyMin = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    QtyMinimumStock = table.Column<int>(type: "int", maxLength: 10, nullable: false),
                     QtyInStock = table.Column<int>(type: "int", maxLength: 10, nullable: false),
-                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    UnitPrice = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
                     UnitOfMeasure = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     ReceiveAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     lastAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.PrimaryKey("PK_Products", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
-                    UserID = table.Column<int>(type: "int", nullable: false)
+                    ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    UserID = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     Username = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     FirstName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
@@ -112,13 +132,16 @@ namespace Warehouse_API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.UserID);
+                    table.PrimaryKey("PK_Users", x => x.ID);
                 });
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Approvals");
+
             migrationBuilder.DropTable(
                 name: "Divisions");
 

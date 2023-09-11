@@ -5,7 +5,9 @@ namespace Warehouse_API.Models
     public class Users
     {
         [Key]
-        public int UserID { get; set; }
+        public int ID { get; set; }
+        [MaxLength(10)]
+        public string? UserID { get; set; }
         [MaxLength(100)]
         public string? Username { get; set; }
         [MaxLength(100)]
@@ -14,12 +16,14 @@ namespace Warehouse_API.Models
         public string? FirstName { get; set; }
         [MaxLength(100)]
         public string? LastName { get; set; }
+        [MaxLength(200)]
+        public string? ImageFile { get; set; }
         [MaxLength(10)]
         public string? DV_ID { get; set; } // รหัสแผนก
         [MaxLength(10)]
         public string? P_ID { get; set;} // รหัสตำแหน่ง
         [MaxLength(50)]
         public string? Status { get; set; } = "พนักงาน"; // เป็นพนักงาน /ลาออก
-        // เพิ่มคอลัมน์เพิ่มเติมตามความต้องการของระบบผู้ใช้งาน
+         
     }
 }

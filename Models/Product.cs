@@ -7,7 +7,7 @@ namespace Warehouse_API.Models
     public class Product
     {
         [Key]
-        public int Id { get; set; }
+        public int ID { get; set; }
         [MaxLength (10)]
         public string? ProductID { get; set; } //รหัสสินค้าอุปกรณ์
         [MaxLength(200)]
@@ -17,7 +17,7 @@ namespace Warehouse_API.Models
         [MaxLength(500)]
         public string? PImages { get; set; } //path image
         [MaxLength(10)]
-        public int QtyMinStock { get;  set; } //จำนวนที่ต้องแจ้งเตือนเมื่อของเหลือน้อยตามที่กำหนด
+        public int QtyMinimumStock { get;  set; } //จำนวนที่ต้องแจ้งเตือนเมื่อของเหลือน้อยตามที่กำหนด
         [MaxLength(10)]
         public int QtyInStock { get; set; } //จำนวนนำเข้า
         [Column(TypeName = "decimal(18, 4)")] 

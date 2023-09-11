@@ -5,7 +5,7 @@ namespace Warehouse_API.Models
     public class Position
     {
         [Key]
-        public int Id { get; set; }
+        public int ID { get; set; }
         [MaxLength(10)] 
         public string? P_ID { get; set; } //รหัสตำแหน่ง
         [MaxLength(150)]
