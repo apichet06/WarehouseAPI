@@ -55,7 +55,7 @@ namespace Warehouse_API.Controllers
                         return _response;
                     }
 
-                string nexID = await GenerateAutoId();
+                string nextID = await GenerateAutoId();
                 
 
                 if(imageFile !=null && imageFile.Length > 0)
@@ -66,7 +66,7 @@ namespace Warehouse_API.Controllers
                         Directory.CreateDirectory(uploadFolderPath);
                     }
                     string extension = Path.GetExtension(imageFile.FileName);
-                    string uniqueFileName = nexID + extension;
+                    string uniqueFileName = nextID + extension;
                     string filePath = Path.Combine(uploadFolderPath, uniqueFileName);
 
                     using (var fileStream = new FileStream(filePath,FileMode.Create))
@@ -77,7 +77,7 @@ namespace Warehouse_API.Controllers
                 }
                  
                 Users obj = _mapper.Map<Users>(users);
-                obj.UserID = nexID;
+                obj.UserID = nextID;
                 _db.Users.Add(obj);
                 await _db.SaveChangesAsync();
 
@@ -120,8 +120,9 @@ namespace Warehouse_API.Controllers
                  obj.Status = users.Status;
                  obj.P_ID = users.P_ID;
                  obj.Status = users.Status;
+                  
 
-                if(imageFile != null && imageFile.Length > 0)
+                if (imageFile != null && imageFile.Length > 0)
                 {
                     if (!string.IsNullOrEmpty(obj.ImageFile))
                     {

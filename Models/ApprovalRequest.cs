@@ -7,7 +7,7 @@ namespace Warehouse_API.Models
         [Key]
         public int ID { get; set; }
         [MaxLength(10)]
-        public int ApprovalRequestID { get; set; }
+        public string? ApprovalRequestID { get; set; }
         [MaxLength(10)]
         public string? UserID { get; set; } // ผู้ใช้ที่ส่งคำขอ
         // public Guid UserID { get; set; } // ผู้ใช้ที่ส่งคำขอ
@@ -16,8 +16,7 @@ namespace Warehouse_API.Models
         [MaxLength(10)]
         public int Quantity { get; set; } // จำนวนที่ขออนุมัติ
         [DataType(DataType.DateTime)]
-        public DateTime RequestDate { get; set; } // วันที่ส่งคำขอ
-        
+        public DateTime RequestDate { get; set; } // วันที่ส่งคำขอ 
         public bool IsApproved { get; set; } // สถานะการอนุมัติ (true หรือ false)
     }
 }

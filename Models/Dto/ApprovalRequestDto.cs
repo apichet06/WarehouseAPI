@@ -4,11 +4,10 @@ namespace Warehouse_API.Models.Dto
 {
     public class ApprovalRequestDto
     {
-
         [Key]
         public int ID { get; set; }
         [MaxLength(10)]
-        public int ApprovalRequestID { get; set; }
+        public string? ApprovalRequestID { get; set; }
         [MaxLength(10)]
         public string? UserID { get; set; } // ผู้ใช้ที่ส่งคำขอ
         // public Guid UserID { get; set; } // ผู้ใช้ที่ส่งคำขอ
