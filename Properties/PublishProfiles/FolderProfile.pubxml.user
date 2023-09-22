@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>D:\wwwroot\WHAPI</_PublishTargetUrl>
+    <History>True|2023-09-21T08:46:22.7422219Z;True|2023-09-21T15:00:35.0227248+07:00;True|2023-09-21T11:53:54.0443411+07:00;True|2023-09-21T11:50:35.0848316+07:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DefaultConnection">
+      <Value>Data Source=.\SQLEXPRESS%3bInitial Catalog=WhDB%3bUser ID=sa%3bPassword=123456%3bConnect Timeout=30%3bEncrypt=False%3bTrustServerCertificate=False%3bApplicationIntent=ReadWrite%3bMultiSubnetFailover=False</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+</Project>

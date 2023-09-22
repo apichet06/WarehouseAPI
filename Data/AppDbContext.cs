@@ -16,11 +16,6 @@ namespace Warehouse_API.Data
        public DbSet<Users> Users { get; set; }
        public DbSet<ApprovalRequest> Approvals { get; set; } 
 
-       /* protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Product>()
-                .Property(p => p.UnitPrice)
-                .HasColumnType("decimal(18, 4)");
-        }*/
+     
     }
 }

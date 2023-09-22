@@ -1,7 +1,10 @@
-﻿using AutoMapper; 
+﻿using AutoMapper;
+ 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
+using System.Text;
 using Warehouse_API.Data;
 using Warehouse_API.Models;
 using Warehouse_API.Models.Dto;
@@ -77,6 +80,20 @@ namespace Warehouse_API.Controllers
                 }
                  
                 Users obj = _mapper.Map<Users>(users);
+
+
+                using (SHA256 sha256 = SHA256.Create())
+                {
+
+                    byte[] passwordBytes = Encoding.UTF8.GetBytes(users.Password!);
+                    byte[] hashedBytes = sha256.ComputeHash(passwordBytes);
+                    string hashedPassword = Convert.ToBase64String(hashedBytes);
+
+                    obj.Password = hashedPassword;
+
+                }
+                 
+
                 obj.UserID = nextID;
                 _db.Users.Add(obj);
                 await _db.SaveChangesAsync();
@@ -112,7 +129,7 @@ namespace Warehouse_API.Controllers
                     _response.Message = _message.already_exists + users.FirstName + " " + users.LastName;
                     return _response;
                 }
-             
+              
 
                  obj.FirstName = users.FirstName;
                  obj.LastName = users.LastName;
@@ -160,32 +177,7 @@ namespace Warehouse_API.Controllers
             }
             return _response;
         }
-         
-         
 
-        [HttpPut("ChangePassword/{id:int}")]
-        public async Task<ResponseDto> ChangPassword(int id,Users users)
-        {
-            try
-            {
-                Users? obj = await _db.Users.FirstOrDefaultAsync(x => x.ID == id);
-                if(obj == null)
-                {
-                    _response.IsSuccess = false;
-                    _response.Message = _message.Not_found;
-                    return _response;
-                }
-
-                obj.Password = users.Password;
-                await _db.SaveChangesAsync();
-
-            }catch (Exception ex)
-            {
-                _response.IsSuccess=false;
-                 _response.Message=   _message.an_error_occurred+ex.Message;
-            }
-            return   _response;
-        }
 
         [HttpDelete]
         [Route("{id:int}")]
@@ -204,9 +196,11 @@ namespace Warehouse_API.Controllers
                  await  _db.SaveChangesAsync();
 
                 _response.Result = _mapper.Map<UsersDto>(obj);
-                _response.Message = _message.DeleteMessage; 
+                _response.Message = _message.DeleteMessage;
+                 
 
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 _response.IsSuccess=false;
                 _response.Message = _message.an_error_occurred + ex.Message;
@@ -214,6 +208,48 @@ namespace Warehouse_API.Controllers
 
             return _response;
         }
+
+
+
+
+        [HttpPut("ChangePassword/{id:int}")]
+        public async Task<ResponseDto> ChangPassword(int id, Users users)
+        {
+            try
+            {
+                Users? obj = await _db.Users.FirstOrDefaultAsync(x => x.ID == id);
+                if (obj == null)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = _message.Not_found;
+                    return _response;
+                }
+
+
+                using (SHA256 sha256 = SHA256.Create())
+                {
+
+                    byte[] passwordBytes = Encoding.UTF8.GetBytes(users.Password!);
+                    byte[] hashedBytes = sha256.ComputeHash(passwordBytes);
+                    string hashedPassword = Convert.ToBase64String(hashedBytes);
+
+                    obj.Password = hashedPassword;
+
+                }
+
+                await _db.SaveChangesAsync();
+                _response.Message = _message.changPassword;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = _message.an_error_occurred + ex.Message;
+            }
+
+            return _response;
+        }
+
+
 
         private async Task<string> GenerateAutoId()
         {
