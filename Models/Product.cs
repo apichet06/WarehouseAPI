@@ -10,6 +10,8 @@ namespace Warehouse_API.Models
         public int ID { get; set; }
         [MaxLength (10)]
         public string? ProductID { get; set; } //รหัสสินค้าอุปกรณ์
+        [MaxLength(10)]
+        public string? TypeID { get; set; } //รหัสกลุ่มสินค้า
         [MaxLength(200)]
         public string? ProductName { get; set; } //สินค้าอุปกรณ์
         [MaxLength(500)]
@@ -28,5 +30,6 @@ namespace Warehouse_API.Models
         public DateTime? ReceiveAt{ get; set; } //วันที่สร้างครั้งแรก
          [DataType (DataType.DateTime)]
         public DateTime? lastAt { get; set;} //update วันที่
+       
     }
 }

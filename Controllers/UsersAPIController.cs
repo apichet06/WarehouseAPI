@@ -192,6 +192,17 @@ namespace Warehouse_API.Controllers
                     _response.Message = _message.Not_found;
                     return _response;
                 }
+
+                if (string.IsNullOrEmpty(obj.ImageFile))
+                {
+                    string imagePath = Path.Combine(Directory.GetCurrentDirectory(),obj.ImageFile!);
+                    if (System.IO.File.Exists(imagePath))
+                    {
+                        System.IO.File.Delete(imagePath);
+                    }
+                }
+                 
+
                  _db.Users.Remove(obj);
                  await  _db.SaveChangesAsync();
 

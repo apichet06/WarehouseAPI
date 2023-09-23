@@ -10,6 +10,8 @@ namespace Warehouse_API.Models.Dto
         public int ID { get; set; }
         [MaxLength(10)]
         public string? ProductID { get; set; } //รหัสสินค้าอุปกรณ์
+        [MaxLength(10)]
+        public string? TypeID { get; set; } //รหัสกลุ่มสินค้า
         [MaxLength(200)]
         public string? ProductName { get; set; } //สินค้าอุปกรณ์
         [MaxLength(500)]

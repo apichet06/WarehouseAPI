@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Warehouse_API.Migrations
 {
     /// <inheritdoc />
-    public partial class AddTableWHDB : Migration
+    public partial class addTableDBWh : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,7 +17,7 @@ namespace Warehouse_API.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ApprovalRequestID = table.Column<int>(type: "int", maxLength: 10, nullable: false),
+                    ApprovalRequestID = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     UserID = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     ProductID = table.Column<int>(type: "int", maxLength: 10, nullable: false),
                     Quantity = table.Column<int>(type: "int", maxLength: 10, nullable: false),
@@ -51,7 +51,8 @@ namespace Warehouse_API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IncomingStockID = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     ProductID = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    QtyReceived = table.Column<int>(type: "int", maxLength: 10, nullable: false),
+                    QtyReceived = table.Column<int>(type: "int", nullable: false),
+                    UnitPriceReceived = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ReceivedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ReceivedBy = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true)
                 },
@@ -66,12 +67,15 @@ namespace Warehouse_API.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    OutgoingStockID = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    OutgoingStockID = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: true),
                     ProductID = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    QTYWithdrawn = table.Column<int>(type: "int", maxLength: 10, nullable: false),
-                    UnitPrice = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
+                    QTYWithdrawn = table.Column<int>(type: "int", nullable: false),
+                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     WithdrawnDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    WithdrawnBy = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true)
+                    WithdrawnBy = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    ApproveBy = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    AppvDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsApproved = table.Column<string>(type: "nvarchar(1)", maxLength: 1, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -100,12 +104,13 @@ namespace Warehouse_API.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductID = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    TypeID = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     ProductName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     ProductDescription = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     PImages = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    QtyMinimumStock = table.Column<int>(type: "int", maxLength: 10, nullable: false),
-                    QtyInStock = table.Column<int>(type: "int", maxLength: 10, nullable: false),
-                    UnitPrice = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
+                    QtyMinimumStock = table.Column<int>(type: "int", nullable: false),
+                    QtyInStock = table.Column<int>(type: "int", nullable: false),
+                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     UnitOfMeasure = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     ReceiveAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     lastAt = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -113,6 +118,20 @@ namespace Warehouse_API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductTypes",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TypeID = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    TypeName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductTypes", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -126,6 +145,7 @@ namespace Warehouse_API.Migrations
                     Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     FirstName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    ImageFile = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     DV_ID = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     P_ID = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
@@ -156,6 +176,9 @@ namespace Warehouse_API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "ProductTypes");
 
             migrationBuilder.DropTable(
                 name: "Users");

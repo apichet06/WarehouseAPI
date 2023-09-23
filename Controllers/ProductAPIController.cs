@@ -153,7 +153,7 @@ namespace Warehouse_API.Controllers
                 obj.UnitOfMeasure = product.UnitOfMeasure;
                 obj.QtyInStock = product.QtyInStock;
                 obj.QtyMinimumStock = product.QtyMinimumStock;
-                
+                obj.TypeID = product.TypeID;
                 // รับวันที่และเวลาปัจจุบันในโซนเวลาของกรุงเทพมหานคร
                 DateTime bangkokTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Asia/Bangkok"));
                
@@ -194,8 +194,16 @@ namespace Warehouse_API.Controllers
                     _response.Message = _message.Not_found;
                     return _response;
                 }
+                if (string.IsNullOrEmpty(obj.PImages))
+                {
+                    string imagePath = Path.Combine(Directory.GetCurrentDirectory(), obj.PImages!);
+                    if (System.IO.File.Exists(imagePath))
+                    {
+                        System.IO.File.Delete(imagePath);
+                    }
+                }
 
-                 _db.Products.Remove(obj);
+                _db.Products.Remove(obj);
                 await _db.SaveChangesAsync();
 
                 _response.Result= _mapper.Map<ProductDto>(obj);

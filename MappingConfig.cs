@@ -23,6 +23,8 @@ namespace Warehouse_API
                 config.CreateMap<ProductDto, Product>();
                 config.CreateMap<Users, UsersDto>();
                 config.CreateMap<UsersDto, Users>();
+                config.CreateMap<ProductType, ProductTypeDto>();
+                config.CreateMap<ProductTypeDto, ProductType>();
             });
 
             return mappingCongfig;
