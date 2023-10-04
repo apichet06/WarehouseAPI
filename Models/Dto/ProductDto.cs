@@ -30,5 +30,6 @@ namespace Warehouse_API.Models.Dto
         public DateTime? ReceiveAt { get; set; } //วันที่สร้างครั้งแรก
         [DataType(DataType.DateTime)]
         public DateTime? lastAt { get; set; } //update วันที่
+        public ProductTypeDto? ProductType { get; set; }
     }
 }

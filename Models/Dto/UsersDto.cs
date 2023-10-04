@@ -25,6 +25,10 @@ namespace Warehouse_API.Models.Dto
         public string? P_ID { get; set; } // รหัสตำแหน่ง
         [MaxLength(50)]
         public string? Status { get; set; } = "พนักงาน"; // เป็นพนักงาน /ลาออก
-
+        [DataType(DataType.DateTime)]
+        public DateTime? Date { get; set; }
+        public DivisionDto? Division { get; set; }
+        public PositionDto? Position { get; set; }
+        
     }
 }

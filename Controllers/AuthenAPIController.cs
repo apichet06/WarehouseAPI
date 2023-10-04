@@ -43,11 +43,41 @@ namespace Warehouse_API.Controllers
             try
             {
 
-                var  users = await _db.Users.SingleOrDefaultAsync(e=>e.Username == user.Username && e.Password == HashPassword(user.Password!));
+                //  var  users = await _db.Users.SingleOrDefaultAsync(e=>e.Username == user.Username && e.Password == HashPassword(user.Password!));
+                 
 
+                var users = await _db.Users
+               .Where(e => e.Username == user.Username && e.Password == HashPassword(user.Password!))
+               .Join(_db.Divisions, u => u.DV_ID, dv => dv.DV_ID, (u, dv) => new { User = u, Division = dv })
+               .Join(_db.Positions, x => x.User.P_ID, pt => pt.P_ID, (x, pt) => new UsersDto
+               {
+                   ID = x.User.ID,
+                   UserID = x.User.UserID,
+                   Username = x.User.Username,
+                   FirstName = x.User.FirstName,
+                   LastName = x.User.LastName,
+                   ImageFile = x.User.ImageFile,
+                   // เพิ่ม properties อื่นๆ ของ UserDto ที่คุณต้องการให้มีค่าได้ตามต้องการ
+                   Division = new DivisionDto
+                   {
+                       DV_ID = x.Division.DV_ID,
+                       DV_Name = x.Division.DV_Name
+                       // เพิ่ม properties อื่นๆ ของ DivisionDto ที่คุณต้องการให้มีค่าได้ตามต้องการ
+                   },
+                   Position = new PositionDto
+                   {
+                       P_ID = pt.P_ID,
+                       P_Name = pt.P_Name
+                       // เพิ่ม properties อื่นๆ ของ PositionDto ที่คุณต้องการให้มีค่าได้ตามต้องการ
+                   }
+               })
+               .SingleOrDefaultAsync();
 
-                if(users != null)
+                if (users != null)
                 {
+
+                     
+
                     var claims = new[]
                     {
                         new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]!),

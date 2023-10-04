@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using Warehouse_API.Data;
 using Warehouse_API.Models;
 using Warehouse_API.Models.Dto;
@@ -27,16 +28,41 @@ namespace Warehouse_API.Controllers
             _message = new MessageDto();
         }  
          
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpGet] 
+        public async Task<ActionResult<ResponseDto>> Get()
+              
         {
             try
             {
-                IEnumerable<Product> objList = await _db.Products.ToListAsync();
-               _response.Result =  _mapper.Map<IEnumerable<ProductDto>>(objList);
-                
+             
+                var query = from product in _db.Products
+                            join p in _db.ProductTypes on product.TypeID equals p.TypeID
+                            select new ProductDto
+                            {
+                                ID = product.ID,
+                                ProductID = product.ProductID,
+                                TypeID = product.TypeID,
+                                ProductName = product.ProductName,
+                                ProductDescription = product.ProductDescription,
+                                PImages = product.PImages,
+                                QtyMinimumStock = product.QtyMinimumStock,
+                                QtyInStock = product.QtyInStock,
+                                UnitPrice = product.UnitPrice,
+                                UnitOfMeasure = product.UnitOfMeasure,
+                                ReceiveAt = product.ReceiveAt,
+                                lastAt = product.lastAt,
+                                ProductType = new ProductTypeDto
+                                {
+                                    ID = p.ID,
+                                    TypeID = p.TypeID,
+                                    TypeName = p.TypeName
+                                }
+                            };
+                List<ProductDto> resultList= await query.ToListAsync();
+                _response.Result = resultList;
 
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 _response.IsSuccess = false;
                 _response.Message =  _message.an_error_occurred + ex.Message;
@@ -194,7 +220,7 @@ namespace Warehouse_API.Controllers
                     _response.Message = _message.Not_found;
                     return _response;
                 }
-                if (string.IsNullOrEmpty(obj.PImages))
+                if (!string.IsNullOrEmpty(obj.PImages))
                 {
                     string imagePath = Path.Combine(Directory.GetCurrentDirectory(), obj.PImages!);
                     if (System.IO.File.Exists(imagePath))
@@ -202,6 +228,7 @@ namespace Warehouse_API.Controllers
                         System.IO.File.Delete(imagePath);
                     }
                 }
+                 
 
                 _db.Products.Remove(obj);
                 await _db.SaveChangesAsync();

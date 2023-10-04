@@ -31,13 +31,42 @@ namespace Warehouse_API.Controllers
         [HttpGet]
         public async Task<ResponseDto> Get()
         {
-
             try
             {
-               List<Users> objList = await _db.Users.ToListAsync();
-                _response.Result = _mapper.Map<List<Users>>(objList);
+                var query = from user in _db.Users
+                            join dv in _db.Divisions on user.DV_ID equals dv.DV_ID
+                            join pt in _db.Positions on user.P_ID equals pt.P_ID
+                            select new UsersDto
+                            {
+                                ID = user.ID,
+                                UserID = user.UserID,
+                                Username = user.Username,
+                                Password = user.Password,
+                                FirstName = user.FirstName,
+                                LastName = user.LastName,
+                                ImageFile = user.ImageFile,
+                                DV_ID = user.DV_ID,
+                                P_ID = user.P_ID,
+                                Status = user.Status,
+                                Date = user.Date,
+                                Division = new DivisionDto
+                                {
+                                    DV_ID = dv.DV_ID,
+                                    DV_Name= dv.DV_Name
+                                    // เพิ่ม properties อื่นๆ ของ DivisionDto ที่คุณต้องการให้มีค่าได้ตามต้องการ
+                                },
+                                Position = new PositionDto
+                                {
+                                    P_ID = pt.P_ID,
+                                    P_Name = pt.P_Name
+                                    // เพิ่ม properties อื่นๆ ของ PositionDto ที่คุณต้องการให้มีค่าได้ตามต้องการ
+                                }
+                            };
 
-            }catch (Exception ex)
+                List<UsersDto> resultList = await query.ToListAsync();
+                _response.Result = resultList;
+            }
+            catch (Exception ex)
             {
                 _response.IsSuccess = false;
                 _response.Message = _message.an_error_occurred + ex.Message;
@@ -95,6 +124,7 @@ namespace Warehouse_API.Controllers
                  
 
                 obj.UserID = nextID;
+                obj.Date = DateTime.Now;
                 _db.Users.Add(obj);
                 await _db.SaveChangesAsync();
 
@@ -123,7 +153,7 @@ namespace Warehouse_API.Controllers
                     _response.Message = _message.Not_found;
                     return _response;
                 }
-            if(await _db.Users.AnyAsync(c => c.ID != id && c.FirstName == users.FirstName && c.LastName == users.LastName))
+            if(await _db.Users.AnyAsync(c => c.ID != id && c.FirstName == users.FirstName && c.LastName == users.LastName && c.Username == users.Username))
                 {
                     _response.IsSuccess = false;
                     _response.Message = _message.already_exists + users.FirstName + " " + users.LastName;
@@ -137,6 +167,7 @@ namespace Warehouse_API.Controllers
                  obj.Status = users.Status;
                  obj.P_ID = users.P_ID;
                  obj.Status = users.Status;
+                 obj.Date = DateTime.Now;
                   
 
                 if (imageFile != null && imageFile.Length > 0)
@@ -149,20 +180,19 @@ namespace Warehouse_API.Controllers
                             System.IO.File.Delete(imagePath);
                         }
                     }
+                    string uploadFolderPath = Path.Combine("Uploads\\Profile", DateTime.Now.ToString("yyyyMM"));
+                    string extension = Path.GetExtension(imageFile!.FileName);
+                    string uniqueFileName = obj.UserID + extension;
+                    string filePath = Path.Combine(uploadFolderPath, uniqueFileName);
+                    using (var filestream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await imageFile.CopyToAsync(filestream);
+                    }
+
+                    obj.ImageFile = filePath;
                 }
 
-
-                string uploadFolderPath = Path.Combine("Uploads\\Profile", DateTime.Now.ToString("yyyyMM"));
-                string extension = Path.GetExtension(imageFile!.FileName);
-                string uniqueFileName = obj.UserID + extension;
-                string filePath = Path.Combine(uploadFolderPath, uniqueFileName);
-
-                using (var filestream =new FileStream(filePath, FileMode.Create))
-                {
-                    await imageFile.CopyToAsync(filestream);
-                }
-
-                obj.ImageFile = filePath;
+                 
                  
                 _db.Users.Update(obj);
                 await _db.SaveChangesAsync();
@@ -193,7 +223,7 @@ namespace Warehouse_API.Controllers
                     return _response;
                 }
 
-                if (string.IsNullOrEmpty(obj.ImageFile))
+                if (!string.IsNullOrEmpty(obj.ImageFile))
                 {
                     string imagePath = Path.Combine(Directory.GetCurrentDirectory(),obj.ImageFile!);
                     if (System.IO.File.Exists(imagePath))
@@ -219,9 +249,7 @@ namespace Warehouse_API.Controllers
 
             return _response;
         }
-
-
-
+         
 
         [HttpPut("ChangePassword/{id:int}")]
         public async Task<ResponseDto> ChangPassword(int id, Users users)

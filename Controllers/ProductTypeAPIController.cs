@@ -32,7 +32,8 @@ namespace Warehouse_API.Controllers
             {
                 IEnumerable<ProductType> productType = await _db.ProductTypes.ToListAsync();
                 _response.Result = _mapper.Map<IEnumerable<ProductTypeDto>>(productType);
-                  
+           
+
 
             }catch (Exception ex)
             {
@@ -51,6 +52,7 @@ namespace Warehouse_API.Controllers
                 {
                     _response.IsSuccess=false;
                     _response.Message = _message.already_exists + productType.TypeName;
+                    return _response;
                 }
 
                 string NextID = await GenerateAutoID();
@@ -79,19 +81,24 @@ namespace Warehouse_API.Controllers
         {
             try
             {
-                if(await _db.ProductTypes.AnyAsync(c=>c.ID!= productType.ID  && c.TypeName == productType.TypeName))
+                if(await _db.ProductTypes.AnyAsync(c=>c.ID != id && c.TypeName == productType.TypeName))
                 {
                     _response.IsSuccess=false;
                     _response.Message = _message.already_exists+productType.TypeName;
+                    return _response;
                 }
 
-                ProductType obj = _mapper.Map<ProductType>(productType);
+                ProductType? obj = await _db.ProductTypes.FirstOrDefaultAsync(c => c.ID == id);
+                
 
-                obj.TypeName = productType.TypeName;
+                obj!.TypeName = productType.TypeName;
                 _db.ProductTypes.Update(obj);
                 await _db.SaveChangesAsync();
 
-            }catch (Exception ex)
+                 _response.Result = _mapper.Map<ProductType>(productType);
+                 _response.Message = _message.UpdateMessage;
+            }
+            catch (Exception ex)
             {
                 _response.IsSuccess = false;
                 _response.Message = _message.an_error_occurred+ex.Message;
@@ -101,7 +108,7 @@ namespace Warehouse_API.Controllers
         }
 
 
-        [HttpDelete] 
+        [HttpDelete("{typeID}")] 
         public async Task<ActionResult<ResponseDto>> DeleteProductType(string typeID)
         {
             try

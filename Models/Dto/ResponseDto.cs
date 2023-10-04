@@ -16,6 +16,6 @@
         public string an_error_occurred { get; set; } = "เกิดข้อผิดพลาด 500 : ";
         public string Approved_status { get; set; } = "ดำเนินการสำเร็จ!";
         public string changPassword { get; set; } = "แก้ไขรหัสผ่านสำเร็จ!";
-        public string Active { get; set; } = "ข้อมูลถูกใช้งานอยู่ไม่สามารถลบได้ : ";
+        public string Active { get; set; } = "ข้อมูลถูกใช้งานอยู่ : ";
     }
 }

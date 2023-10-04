@@ -27,8 +27,7 @@ namespace Warehouse_API.Controllers
             _message = new MessageDto();
         }
 
-        [HttpGet]
-        [Route("")]
+        [HttpGet("{DV_ID?}")]
         public async Task<ResponseDto> Get(string DV_ID = null!)
         {
             try
@@ -50,11 +49,7 @@ namespace Warehouse_API.Controllers
 
                 if (!string.IsNullOrEmpty(DV_ID))
                 {
-                    objList = await _db.Positions.Where(c => c.DV_ID == DV_ID).ToListAsync();
-                }
-                else
-                {
-                    objList = await _db.Positions.ToListAsync();
+                    mappedList = mappedList.Where(c => c.DV_ID == DV_ID).ToList();
                 }
 
                 _response.Result = _mapper.Map<IEnumerable<PositionDto>>(mappedList);
