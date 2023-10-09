@@ -21,5 +21,7 @@ namespace Warehouse_API.Models.Dto
         public DateTime ReceivedDate { get; set; }
         [MaxLength(10)]
         public string? ReceivedBy { get; set; } //userID
+        public ProductDto? Product { get; set; }
+        public UsersDto? Users { get; set; }
     }
 }
