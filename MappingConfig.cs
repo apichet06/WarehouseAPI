@@ -15,8 +15,8 @@ namespace Warehouse_API
                 config.CreateMap<DivisionDto, Division>();
                 config.CreateMap<IncomingStock, IncomingStockDto>();
                 config.CreateMap<IncomingStockDto, IncomingStock>();
-                config.CreateMap<OutgoingStock, OutgoingStockDto>();
-                config.CreateMap<OutgoingStockDto, OutgoingStock>();
+                config.CreateMap<Picking_goodsDetail,Picking_goodsDetailDto>();
+                config.CreateMap<Picking_goodsDetailDto, Picking_goodsDetail>();
                 config.CreateMap<Position, PositionDto>();
                 config.CreateMap<PositionDto, Position>();
                 config.CreateMap<Product, ProductDto>();
@@ -25,6 +25,7 @@ namespace Warehouse_API
                 config.CreateMap<UsersDto, Users>();
                 config.CreateMap<ProductType, ProductTypeDto>();
                 config.CreateMap<ProductTypeDto, ProductType>();
+                config.CreateMap<InventoryRequest, InventoryRequestDto>();
             });
 
             return mappingCongfig;

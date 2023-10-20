@@ -112,7 +112,50 @@ namespace Warehouse_API.Migrations
                     b.ToTable("IncomingStocks");
                 });
 
-            modelBuilder.Entity("Warehouse_API.Models.OutgoingStock", b =>
+            modelBuilder.Entity("Warehouse_API.Models.InventoryRequest", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("ApproveBy")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<DateTime>("AppvDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DivisionId")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("IsApproved")
+                        .HasMaxLength(1)
+                        .HasColumnType("nvarchar(1)");
+
+                    b.Property<string>("Purpose")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("RequestCode")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("RequesterUserId")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<DateTime>("TransactionTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("InventoryRequests");
+                });
+
+            modelBuilder.Entity("Warehouse_API.Models.Picking_goodsDetail", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -132,7 +175,7 @@ namespace Warehouse_API.Migrations
                         .HasMaxLength(1)
                         .HasColumnType("nvarchar(1)");
 
-                    b.Property<string>("OutgoingStockID")
+                    b.Property<string>("Picking_goodsID")
                         .HasMaxLength(11)
                         .HasColumnType("nvarchar(11)");
 
@@ -142,6 +185,10 @@ namespace Warehouse_API.Migrations
 
                     b.Property<int>("QTYWithdrawn")
                         .HasColumnType("int");
+
+                    b.Property<string>("RequestCode")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18, 2)");
@@ -155,7 +202,7 @@ namespace Warehouse_API.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("OutgoingStocks");
+                    b.ToTable("picking_GoodsDetails");
                 });
 
             modelBuilder.Entity("Warehouse_API.Models.Position", b =>

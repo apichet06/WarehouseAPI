@@ -4,12 +4,12 @@ using System.Runtime.CompilerServices;
 
 namespace Warehouse_API.Models.Dto
 {
-    public class OutgoingStockDto
+    public class Picking_goodsDetailDto
     {
         [Key]
         public int ID { get; set; }
         [MaxLength(11)]
-        public string? OutgoingStockID { get; set; }
+        public string? Picking_goodsID { get; set; }
         [MaxLength(10)]
         public string? ProductID { get; set; } //รหัสสินค้า
         [Range(1, 9999999)]
@@ -24,8 +24,10 @@ namespace Warehouse_API.Models.Dto
         public string? ApproveBy { get; set; } //ผู้อนุมัติ
         [DataType(DataType.DateTime)]
         public DateTime AppvDate { get; set; } // เวลาอนุมัติ
+        [MaxLength(30)]
+        public string? RequestCode { get; set; } // รหัส orderId RequestCode  ถ้าเป็นค่าว่างแสดงว่ายังไม่กดส่งเพื่อเบิก ใบเบิกยังไม่เกิดขึ้น
         [MaxLength(1)]
-        public string? IsApproved { get; set; } //status การอนุมัติ
+        public string? IsApproved { get; set; } = "i"; //status การอนุมัติ
 
     }
 }

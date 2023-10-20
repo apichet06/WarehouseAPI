@@ -80,7 +80,6 @@ namespace Warehouse_API.Controllers
                            };
                  
 
-
                 List<IncomingStockDto> objlist = await  Data.ToListAsync();
                 _response.Result = objlist;
                  

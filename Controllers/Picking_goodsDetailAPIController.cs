@@ -10,14 +10,14 @@ namespace Warehouse_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OutgoingStockAPIController : ControllerBase
+    public class Picking_goodsDetailAPIController : ControllerBase
     {
         private AppDBContext _db;
         private ResponseDto _response;
         private MessageDto _message;
         private IMapper _mapper;
 
-        public OutgoingStockAPIController(AppDBContext db,IMapper mapper )
+        public Picking_goodsDetailAPIController(AppDBContext db,IMapper mapper )
         {
             _db = db;
             _response =  new ResponseDto();
@@ -25,15 +25,28 @@ namespace Warehouse_API.Controllers
             _mapper = mapper;
          
         }
-        [HttpGet]
-        public async Task<ResponseDto> Get()
+        [HttpGet("UserId")]
+        public async Task<ResponseDto> Get(string UserId)
         {
             try
             {
-                IEnumerable<OutgoingStock> objList = await _db.OutgoingStocks.ToListAsync();
-                _response.Result = _mapper.Map<IEnumerable<OutgoingStockDto>>(objList);
+                List<Picking_goodsDetail> objList = await _db.picking_GoodsDetails.Where(e => e.WithdrawnBy == UserId).OrderByDescending(e => e.ProductID).ToListAsync();
 
-            }catch (Exception ex)
+                var Data = from pg in _db.picking_GoodsDetails
+                           join u in _db.Products on pg.ProductID equals u.ProductID
+                           select new Picking_goodsDetailDto
+                           {
+                               ProductID = pg.ProductID,
+                               QTYWithdrawn = pg.QTYWithdrawn,
+                               
+
+                           };
+
+
+                _response.Result = _mapper.Map<IEnumerable<Picking_goodsDetailDto>>(objList);
+
+            }
+            catch (Exception ex)
             {
                 _response.IsSuccess = false;
                 _response.Message = _message.an_error_occurred + ex.Message;
@@ -42,19 +55,19 @@ namespace Warehouse_API.Controllers
         }
 
         [HttpPost]
-        public async Task<ResponseDto> Post([FromBody] OutgoingStock outgoingStock)
+        public async Task<ResponseDto> Post([FromBody] Picking_goodsDetail outgoingStock)
         {
             try
             {
-                 OutgoingStock obj = _mapper.Map<OutgoingStock>(outgoingStock);
+               Picking_goodsDetail obj = _mapper.Map <Picking_goodsDetail>(outgoingStock);
 
                 string NextId = await GenerateAutoId();
 
-                obj.OutgoingStockID = NextId; 
-                _db.OutgoingStocks.Add(obj);
+                obj.Picking_goodsID = NextId; 
+                _db.picking_GoodsDetails.Add(obj);
                 await _db.SaveChangesAsync();
-                             
-                _response.Result = _mapper.Map<OutgoingStockDto>(obj);
+
+                _response.Result = _mapper.Map<Picking_goodsDetailDto>(obj);
                 _response.Message = _message.InsertMessage;
 
             }
@@ -68,11 +81,11 @@ namespace Warehouse_API.Controllers
 
         [HttpPut]
         [Route("{id:int}")]
-        public async Task<ResponseDto> Put(int id, [FromBody] OutgoingStock outgoingStock)
+        public async Task<ResponseDto> Put(int id, [FromBody]Picking_goodsDetail outgoingStock)
         {
             try
             {
-                OutgoingStock? obj = await _db.OutgoingStocks.FirstOrDefaultAsync(c => c.ID == id);
+               Picking_goodsDetail? obj = await _db.picking_GoodsDetails.FirstOrDefaultAsync(c => c.ID == id);
                 Product? product = await _db.Products.FirstOrDefaultAsync(c=>c.ProductID == obj!.ProductID);
                 bool productExists = _db.Products.Any(p => p.ProductID == outgoingStock.ProductID);
                 if (!productExists)
@@ -84,9 +97,9 @@ namespace Warehouse_API.Controllers
                 obj!.IsApproved = outgoingStock.IsApproved;
                 obj.QTYWithdrawn = outgoingStock.QTYWithdrawn;
                 obj.ApproveBy = outgoingStock.ApproveBy;
-                obj.AppvDate = outgoingStock.AppvDate;
+                obj.AppvDate = DateTime.Now;
 
-                _db.OutgoingStocks.Update(obj);
+                _db.picking_GoodsDetails.Update(obj);
                 await _db.SaveChangesAsync();
 
 
@@ -94,8 +107,8 @@ namespace Warehouse_API.Controllers
 
                 _db.Products.Update(product);
                 await _db.SaveChangesAsync();
- 
-                _response.Result = _mapper.Map<OutgoingStockDto>(obj);
+
+                _response.Result = _mapper.Map<Picking_goodsDetailDto>(obj);
                 _response.Message = _message.Approved_status;
 
             }
@@ -110,7 +123,7 @@ namespace Warehouse_API.Controllers
 
         private async Task<string> GenerateAutoId()
         {
-            string? lastID  = await _db.OutgoingStocks.OrderByDescending(x => x.ID).Select(x=>x.OutgoingStockID).FirstOrDefaultAsync();
+            string? lastID  = await _db.picking_GoodsDetails.OrderByDescending(x => x.ID).Select(x=>x.Picking_goodsID).FirstOrDefaultAsync();
 
             if (!string.IsNullOrEmpty(lastID))
             {
