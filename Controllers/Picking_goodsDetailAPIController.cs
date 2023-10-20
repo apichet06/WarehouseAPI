@@ -37,9 +37,7 @@ namespace Warehouse_API.Controllers
                            select new Picking_goodsDetailDto
                            {
                                ProductID = pg.ProductID,
-                               QTYWithdrawn = pg.QTYWithdrawn,
-                               
-
+                               QTYWithdrawn = pg.QTYWithdrawn, 
                            };
 
 
