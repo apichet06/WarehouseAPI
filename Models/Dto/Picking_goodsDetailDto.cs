@@ -18,7 +18,7 @@ namespace Warehouse_API.Models.Dto
         public decimal UnitPrice { get; set; } //ราคาต่อหน่วย
         [DataType(DataType.DateTime)]
         public DateTime WithdrawnDate { get; set; } //เวลาเบิก
-        [MaxLength(10)]
+        [MaxLength(10)] 
         public string? WithdrawnBy { get; set; } //UserID
         [MaxLength(10)]
         public string? ApproveBy { get; set; } //ผู้อนุมัติ
@@ -28,6 +28,7 @@ namespace Warehouse_API.Models.Dto
         public string? RequestCode { get; set; } // รหัส orderId RequestCode  ถ้าเป็นค่าว่างแสดงว่ายังไม่กดส่งเพื่อเบิก ใบเบิกยังไม่เกิดขึ้น
         [MaxLength(1)]
         public string? IsApproved { get; set; } = "i"; //status การอนุมัติ
-
+        public UsersDto? Users  { get; set; }
+        public ProductDto? Product  { get; set; }
     }
 }

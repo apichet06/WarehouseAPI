@@ -187,8 +187,8 @@ namespace Warehouse_API.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("RequestCode")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18, 2)");

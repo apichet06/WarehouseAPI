@@ -26,7 +26,7 @@ namespace Warehouse_API.Controllers
             _message = new MessageDto();
         }
 
-        [HttpGet]
+     [HttpGet]
      public  async Task<ResponseDto> Index()
         {
             try

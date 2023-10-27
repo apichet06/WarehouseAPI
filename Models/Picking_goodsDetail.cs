@@ -23,9 +23,11 @@ namespace Warehouse_API.Models
         public string? ApproveBy { get; set; }
         [DataType(DataType.DateTime)]
         public DateTime AppvDate { get; set; } // เวลาอนุมัติ 
-        [MaxLength(10)]
+        [MaxLength(30)]
         public string? RequestCode { get; set; } // รหัส orderId RequestCode  ถ้าเป็นค่าว่างแสดงว่ายังไม่กดส่งเพื่อเบิก ใบเบิกยังไม่เกิดขึ้น
         [MaxLength(1)]
         public string IsApproved { get; set; } = "i"; 
+      
     }
 }
+

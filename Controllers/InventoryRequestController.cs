@@ -40,13 +40,13 @@ namespace Warehouse_API.Controllers
                 await _db.InventoryRequests.AddAsync(obj); 
                 await _db.SaveChangesAsync();
 
-                Picking_goodsDetail? objList = _db.picking_GoodsDetails.FirstOrDefault(a => a.RequestCode == "" && a.WithdrawnBy == UserId);
+                Picking_goodsDetail? objList = _db.Picking_GoodsDetails.FirstOrDefault(a => a.RequestCode == "" && a.WithdrawnBy == UserId);
 
                 // ทำการอัปเดตข้อมูล RequestCode ในตาราง picking_GoodsDetail
                 if (objList != null)
                 {
                     objList.RequestCode = NexId;
-                    _db.picking_GoodsDetails.Update(objList);
+                    _db.Picking_GoodsDetails.Update(objList);
                     await _db.SaveChangesAsync();
                 }
 

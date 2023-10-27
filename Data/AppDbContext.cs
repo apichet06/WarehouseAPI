@@ -10,7 +10,7 @@ namespace Warehouse_API.Data
         
        public DbSet<Division> Divisions { get; set; }
        public DbSet<IncomingStock> IncomingStocks { get; set;}
-       public DbSet<Picking_goodsDetail> picking_GoodsDetails { get; set;}
+       public DbSet<Picking_goodsDetail> Picking_GoodsDetails { get; set;}
        public DbSet<Position> Positions { get; set; }
        public DbSet<Product> Products { get; set; }
        public DbSet<Users> Users { get; set; }

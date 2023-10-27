@@ -1,7 +1,12 @@
 ﻿using AutoMapper;
+using Azure;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System.Data;
 using Warehouse_API.Data;
 using Warehouse_API.Models;
 using Warehouse_API.Models.Dto;
@@ -25,23 +30,44 @@ namespace Warehouse_API.Controllers
             _mapper = mapper;
          
         }
+
+   
+ 
+
         [HttpGet("UserId")]
         public async Task<ResponseDto> Get(string UserId)
         {
             try
             {
-                List<Picking_goodsDetail> objList = await _db.picking_GoodsDetails.Where(e => e.WithdrawnBy == UserId).OrderByDescending(e => e.ProductID).ToListAsync();
+               // List<Picking_goodsDetail> objList = await _db.Picking_GoodsDetails.Where(e => e.WithdrawnBy == UserId).OrderByDescending(e => e.ProductID).ToListAsync();
 
-                var Data = from pg in _db.picking_GoodsDetails
-                           join u in _db.Products on pg.ProductID equals u.ProductID
+                var Data = from pg in _db.Picking_GoodsDetails
+                           join p in _db.Products on pg.ProductID equals p.ProductID
+                           join u in _db.Users on pg.WithdrawnBy equals  u.UserID
+                           where u.UserID == UserId
                            select new Picking_goodsDetailDto
                            {
+                               Picking_goodsID = pg.Picking_goodsID,
                                ProductID = pg.ProductID,
-                               QTYWithdrawn = pg.QTYWithdrawn, 
+                               QTYWithdrawn = pg.QTYWithdrawn,
+                               UnitPrice = pg.UnitPrice, 
+                               Users = new UsersDto { 
+                                   UserID = u.UserID,
+                                   FirstName = u.FirstName,
+                                   LastName= u.LastName, 
+                               },
+                               Product = new ProductDto
+                               {
+                                   ProductID = p.ProductID,
+                                   ProductName= p.ProductName,
+                                   UnitOfMeasure= p.UnitOfMeasure,
+                               }
+                                
                            };
 
+                List<Picking_goodsDetailDto> objList = await Data.ToListAsync();
 
-                _response.Result = _mapper.Map<IEnumerable<Picking_goodsDetailDto>>(objList);
+                _response.Result = objList;
 
             }
             catch (Exception ex)
@@ -50,20 +76,39 @@ namespace Warehouse_API.Controllers
                 _response.Message = _message.an_error_occurred + ex.Message;
             }
             return _response;
-        }
+        } 
 
         [HttpPost]
         public async Task<ResponseDto> Post([FromBody] Picking_goodsDetail outgoingStock)
         {
             try
             {
-               Picking_goodsDetail obj = _mapper.Map <Picking_goodsDetail>(outgoingStock);
 
-                string NextId = await GenerateAutoId();
+                var product = await _db.Picking_GoodsDetails.FirstOrDefaultAsync(x =>
+                    x.ProductID == outgoingStock.ProductID &&
+                    x.WithdrawnBy == outgoingStock.WithdrawnBy &&
+                    x.RequestCode == "" &&
+                    x.ApproveBy == "i");
 
-                obj.Picking_goodsID = NextId; 
-                _db.picking_GoodsDetails.Add(obj);
-                await _db.SaveChangesAsync();
+                Picking_goodsDetail obj = _mapper.Map<Picking_goodsDetail>(outgoingStock);
+
+                if (product != null)
+                {
+                    // มีข้อมูลอยู่แล้ว ดำเนินการ Update
+                    product.WithdrawnDate = DateTime.Now;
+                    product.QTYWithdrawn = product.QTYWithdrawn + obj.QTYWithdrawn;
+                    _db.Picking_GoodsDetails.Update(product);
+                }
+                else
+                {
+                    // ไม่มีข้อมูล ดำเนินการ Insert
+                    string NextId = await GenerateAutoId();
+                    obj.WithdrawnDate = DateTime.Now;
+                    obj.Picking_goodsID = NextId;
+                    _db.Picking_GoodsDetails.Add(obj);
+                }
+
+                await _db.SaveChangesAsync();                 
 
                 _response.Result = _mapper.Map<Picking_goodsDetailDto>(obj);
                 _response.Message = _message.InsertMessage;
@@ -83,7 +128,7 @@ namespace Warehouse_API.Controllers
         {
             try
             {
-               Picking_goodsDetail? obj = await _db.picking_GoodsDetails.FirstOrDefaultAsync(c => c.ID == id);
+               Picking_goodsDetail? obj = await _db.Picking_GoodsDetails.FirstOrDefaultAsync(c => c.ID == id);
                 Product? product = await _db.Products.FirstOrDefaultAsync(c=>c.ProductID == obj!.ProductID);
                 bool productExists = _db.Products.Any(p => p.ProductID == outgoingStock.ProductID);
                 if (!productExists)
@@ -97,7 +142,7 @@ namespace Warehouse_API.Controllers
                 obj.ApproveBy = outgoingStock.ApproveBy;
                 obj.AppvDate = DateTime.Now;
 
-                _db.picking_GoodsDetails.Update(obj);
+                _db.Picking_GoodsDetails.Update(obj);
                 await _db.SaveChangesAsync();
 
 
@@ -121,7 +166,7 @@ namespace Warehouse_API.Controllers
 
         private async Task<string> GenerateAutoId()
         {
-            string? lastID  = await _db.picking_GoodsDetails.OrderByDescending(x => x.ID).Select(x=>x.Picking_goodsID).FirstOrDefaultAsync();
+            string? lastID  = await _db.Picking_GoodsDetails.OrderByDescending(x => x.ID).Select(x=>x.Picking_goodsID).FirstOrDefaultAsync();
 
             if (!string.IsNullOrEmpty(lastID))
             {
