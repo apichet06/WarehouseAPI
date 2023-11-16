@@ -17,11 +17,15 @@ namespace Warehouse_API.Models.Dto
             [MaxLength(10)]
             public string? ApproveBy { get; set; }// ชื่อผู้อนุมัติสินค้า userId
             [DataType(DataType.DateTime)]
-            public DateTime AppvDate { get; set; } // เวลาอนุมัติ 
+            public DateTime? AppvDate { get; set; } // เวลาอนุมัติ 
             [MaxLength(500)]
             public string? Purpose { get; set; } // วัตถุประสงค์ในการเบิก
             [MaxLength(1)]
             public string? IsApproved { get; set; } = "i"; //status การอนุมัติ
+            [MaxLength(400)]
+            public string? Note { get; set; }
+            public UsersDto? Users { get; set; } 
+            public UsersDto? ApprovedUsers { get; set; }
     }
      
 }

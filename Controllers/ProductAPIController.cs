@@ -18,8 +18,7 @@ namespace Warehouse_API.Controllers
         private ResponseDto _response;
         private MessageDto _message;
         private IMapper _mapper;
-
-
+         
         public ProductAPIController(AppDBContext db,  IMapper mapper)
         {
             _db = db;
@@ -28,8 +27,9 @@ namespace Warehouse_API.Controllers
             _message = new MessageDto();
         }  
          
-        [HttpGet] 
-        public async Task<ActionResult<ResponseDto>> Get()
+        [HttpGet]
+        [Route("")]
+        public async Task<ActionResult<ResponseDto>> Get([FromQuery] string search = "")
               
         {
             try
@@ -37,6 +37,7 @@ namespace Warehouse_API.Controllers
              
                 var query = from product in _db.Products
                             join p in _db.ProductTypes on product.TypeID equals p.TypeID
+                            where string.IsNullOrEmpty(search) || product.ProductName!.Contains(search) || product.ProductDescription!.Contains(search) 
                             select new ProductDto
                             {
                                 ID = product.ID,
@@ -164,7 +165,13 @@ namespace Warehouse_API.Controllers
                     string filePath = Path.Combine(uploadsFolderPath, uniqueFileName);
 
 
-                    using(var fileStream = new FileStream(filePath, FileMode.Create))
+                    // ตรวจสอบว่าโฟลเดอร์ uploadsFolderPath มีอยู่หรือไม่ ถ้าไม่มีให้สร้าง
+                    if (!Directory.Exists(uploadsFolderPath))
+                    {
+                        Directory.CreateDirectory(uploadsFolderPath);
+                    }
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
                         await imageFile.CopyToAsync(fileStream);
                     }

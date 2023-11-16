@@ -57,6 +57,7 @@ namespace Warehouse_API.Controllers
                    FirstName = x.User.FirstName,
                    LastName = x.User.LastName,
                    ImageFile = x.User.ImageFile,
+                   Status = x.User.Status,
                    // เพิ่ม properties อื่นๆ ของ UserDto ที่คุณต้องการให้มีค่าได้ตามต้องการ
                    Division = new DivisionDto
                    {

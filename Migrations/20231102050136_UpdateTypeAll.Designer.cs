@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Warehouse_API.Data;
 
@@ -11,9 +12,11 @@ using Warehouse_API.Data;
 namespace Warehouse_API.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231102050136_UpdateTypeAll")]
+    partial class UpdateTypeAll
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -134,10 +137,6 @@ namespace Warehouse_API.Migrations
                     b.Property<string>("IsApproved")
                         .HasMaxLength(1)
                         .HasColumnType("nvarchar(1)");
-
-                    b.Property<string>("Note")
-                        .HasMaxLength(400)
-                        .HasColumnType("nvarchar(400)");
 
                     b.Property<string>("Purpose")
                         .HasMaxLength(500)
