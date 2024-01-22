@@ -383,4 +383,5 @@ D:\Apichet\Warehouse_API\obj\Debug\net7.0\win-x64\refint\Warehouse_API.dll
 D:\Apichet\Warehouse_API\obj\Debug\net7.0\win-x64\Warehouse_API.pdb
 D:\Apichet\Warehouse_API\obj\Debug\net7.0\win-x64\Warehouse_API.genruntimeconfig.cache
 D:\Apichet\Warehouse_API\obj\Debug\net7.0\win-x64\ref\Warehouse_API.dll
-D:\Apichet\Warehouse_API\bin\Debug\net7.0\win-x64\mscordaccore_amd64_amd64_7.0.1323.51816.dll
+D:\Apichet\Warehouse_API\bin\Debug\net7.0\win-x64\mscordaccore_amd64_amd64_7.0.1423.51910.dll
+D:\Apichet\Warehouse_API\obj\Debug\net7.0\win-x64\Warehouse_API.sourcelink.json

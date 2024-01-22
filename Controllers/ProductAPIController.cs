@@ -105,10 +105,10 @@ namespace Warehouse_API.Controllers
                     }
                     product.PImages = filePath;
                 }
-                DateTime bangkokTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Asia/Bangkok"));
+               // DateTime bangkokTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Asia/Bangkok"));
                 Product obj = _mapper.Map<Product>(product);
                  obj.ProductID = NextId;
-                 obj.ReceiveAt = bangkokTime;
+                 obj.ReceiveAt = DateTime.Now;
                 _db.Products.Add(obj);
                 await _db.SaveChangesAsync();   
                  
@@ -188,9 +188,9 @@ namespace Warehouse_API.Controllers
                 obj.QtyMinimumStock = product.QtyMinimumStock;
                 obj.TypeID = product.TypeID;
                 // รับวันที่และเวลาปัจจุบันในโซนเวลาของกรุงเทพมหานคร
-                DateTime bangkokTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Asia/Bangkok"));
+               // DateTime bangkokTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Asia/Bangkok"));
                
-                obj.lastAt = bangkokTime;
+                obj.lastAt = DateTime.Now;
 
 
                 _db.Products.Update(obj);

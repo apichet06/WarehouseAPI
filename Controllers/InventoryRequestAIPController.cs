@@ -54,6 +54,7 @@ namespace Warehouse_API.Controllers
                                  AppvDate = a.AppvDate,
                                  Purpose = a.Purpose,
                                  IsApproved = a.IsApproved,
+                                 Note = a.Note,
                                  Users = new UsersDto
                                  {
                                      FirstName = b.FirstName,
@@ -194,18 +195,19 @@ namespace Warehouse_API.Controllers
         //Update ข้อมูลการเบิกของ
 
         [HttpPut("{UserId}")]
-        public async Task<ResponseDto> UpdateInventory([FromBody] InventoryRequest aentoryRequest, string UserId)
+        public async Task<ResponseDto> UpdateInventory([FromBody] InventoryRequest inventoryRequest, string UserId)
         {
             try
             { 
-                var obj = await _db.InventoryRequests.FirstOrDefaultAsync(a => a.RequestCode == aentoryRequest.RequestCode);
+                var obj = await _db.InventoryRequests.FirstOrDefaultAsync(a => a.RequestCode == inventoryRequest.RequestCode);
                 obj!.ApproveBy = UserId;
                 obj.AppvDate = DateTime.Now;
-                obj.IsApproved = aentoryRequest.IsApproved;  
+                obj.Note = inventoryRequest.Note;
+                obj.IsApproved = inventoryRequest.IsApproved;  
                 _db.InventoryRequests.Update(obj);
                 await _db.SaveChangesAsync();
 
-                 var itemsToUpdate = await _db.Picking_GoodsDetails.Where(a => a.RequestCode == aentoryRequest.RequestCode && a.WithdrawnBy == UserId).ToListAsync();
+                 var itemsToUpdate = await _db.Picking_GoodsDetails.Where(a => a.RequestCode == obj.RequestCode).ToListAsync();
                
                 if (itemsToUpdate != null && itemsToUpdate.Count > 0) // มีข้อมูลหรือไม่ 
                 {
@@ -213,9 +215,9 @@ namespace Warehouse_API.Controllers
                     {
                         item.ApproveBy = UserId;
                         item.AppvDate = DateTime.Now;
-                        item.IsApproved = aentoryRequest.IsApproved!;
+                        item.IsApproved = inventoryRequest.IsApproved!;
                         _db.Picking_GoodsDetails.Update(item);
-                        if(aentoryRequest.IsApproved == "Y")
+                        if(inventoryRequest.IsApproved == "Y")
                         {
                             var product = await _db.Products.FirstOrDefaultAsync(c => c.ProductID == item.ProductID); 
                             if (product != null)
@@ -232,7 +234,7 @@ namespace Warehouse_API.Controllers
                 } 
 
                 _response.Result = _mapper.Map<InventoryRequestDto>(obj);
-                _response.Message = _message.InsertMessage;
+                _response.Message = _message.UpdateMessage;
             }
             catch (Exception ex)
             {

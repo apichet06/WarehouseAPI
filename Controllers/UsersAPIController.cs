@@ -116,8 +116,7 @@ namespace Warehouse_API.Controllers
 
                     byte[] passwordBytes = Encoding.UTF8.GetBytes(users.Password!);
                     byte[] hashedBytes = sha256.ComputeHash(passwordBytes);
-                    string hashedPassword = Convert.ToBase64String(hashedBytes);
-
+                    string hashedPassword = Convert.ToBase64String(hashedBytes); 
                     obj.Password = hashedPassword;
 
                 }

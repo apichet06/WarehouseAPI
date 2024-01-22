@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="WarehouseAPI20240105074854" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^D:\\Apichet\\Warehouse_API\\obj\\Release\\net7\.0\\PubTmp\\Out\\$" />
+  </parameter>
+  <parameter name="Warehouse_API.Data.AppDBContext" description="" value="Data Source=service.database.windows.net,1433;Initial Catalog=WHDB;User ID=saa;Password=0914198805Aa" tags="dbfullsql">
+    <parameterEntry kind="ProviderPath" scope="dbfullsql" match="^D:\\Apichet\\Warehouse_API\\obj\\Release\\net7\.0\\PubTmp\\EFSQLScripts\\Warehouse_API\.Data\.AppDBContext\.sql$" />
+  </parameter>
+</parameters>

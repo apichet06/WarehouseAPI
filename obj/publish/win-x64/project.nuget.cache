@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "CXpxjgVe/GsCz3mYJn5GFSwgHm53K6ZKOebs0lHo0Z2mtf3CDY/69Ckc6ZiTTGAbcJxMeqNOOiT+EMfqZKlBlw==",
+  "dgSpecHash": "3Dn1pUkhmH4C/iwQIcI2u8r62iM5eoys3ezqJEU/TzOSpfuDRR6SzAmeqmtjGqf3waLP6XF5nj5IrHHOrgmzNQ==",
   "success": true,
   "projectFilePath": "D:\\Apichet\\Warehouse_API\\Warehouse_API.csproj",
   "expectedPackageFiles": [
@@ -90,9 +90,9 @@
     "C:\\Users\\Apichet\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512",
     "C:\\Users\\Apichet\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512",
     "C:\\Users\\Apichet\\.nuget\\packages\\system.windows.extensions\\5.0.0\\system.windows.extensions.5.0.0.nupkg.sha512",
-    "C:\\Users\\Apichet\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\7.0.13\\microsoft.netcore.app.runtime.win-x64.7.0.13.nupkg.sha512",
-    "C:\\Users\\Apichet\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\7.0.13\\microsoft.windowsdesktop.app.runtime.win-x64.7.0.13.nupkg.sha512",
-    "C:\\Users\\Apichet\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\7.0.13\\microsoft.aspnetcore.app.runtime.win-x64.7.0.13.nupkg.sha512"
+    "C:\\Users\\Apichet\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\7.0.14\\microsoft.netcore.app.runtime.win-x64.7.0.14.nupkg.sha512",
+    "C:\\Users\\Apichet\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\7.0.14\\microsoft.windowsdesktop.app.runtime.win-x64.7.0.14.nupkg.sha512",
+    "C:\\Users\\Apichet\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\7.0.14\\microsoft.aspnetcore.app.runtime.win-x64.7.0.14.nupkg.sha512"
   ],
   "logs": []
 }

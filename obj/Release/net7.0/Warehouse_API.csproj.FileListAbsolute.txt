@@ -77,3 +77,4 @@ D:\Apichet\Warehouse_API\obj\Release\net7.0\refint\Warehouse_API.dll
 D:\Apichet\Warehouse_API\obj\Release\net7.0\Warehouse_API.pdb
 D:\Apichet\Warehouse_API\obj\Release\net7.0\Warehouse_API.genruntimeconfig.cache
 D:\Apichet\Warehouse_API\obj\Release\net7.0\ref\Warehouse_API.dll
+D:\Apichet\Warehouse_API\obj\Release\net7.0\Warehouse_API.sourcelink.json
