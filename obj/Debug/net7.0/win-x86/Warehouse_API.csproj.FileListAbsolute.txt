@@ -358,7 +358,6 @@ D:\Apichet\Warehouse_API\bin\Debug\net7.0\win-x86\createdump.exe
 D:\Apichet\Warehouse_API\bin\Debug\net7.0\win-x86\hostfxr.dll
 D:\Apichet\Warehouse_API\bin\Debug\net7.0\win-x86\hostpolicy.dll
 D:\Apichet\Warehouse_API\bin\Debug\net7.0\win-x86\mscordaccore.dll
-D:\Apichet\Warehouse_API\bin\Debug\net7.0\win-x86\mscordaccore_x86_x86_7.0.1423.51910.dll
 D:\Apichet\Warehouse_API\bin\Debug\net7.0\win-x86\mscordbi.dll
 D:\Apichet\Warehouse_API\bin\Debug\net7.0\win-x86\mscorrc.dll
 D:\Apichet\Warehouse_API\bin\Debug\net7.0\win-x86\msquic.dll
@@ -385,3 +384,4 @@ D:\Apichet\Warehouse_API\obj\Debug\net7.0\win-x86\refint\Warehouse_API.dll
 D:\Apichet\Warehouse_API\obj\Debug\net7.0\win-x86\Warehouse_API.pdb
 D:\Apichet\Warehouse_API\obj\Debug\net7.0\win-x86\Warehouse_API.genruntimeconfig.cache
 D:\Apichet\Warehouse_API\obj\Debug\net7.0\win-x86\ref\Warehouse_API.dll
+D:\Apichet\Warehouse_API\bin\Debug\net7.0\win-x86\mscordaccore_x86_x86_7.0.1523.57226.dll

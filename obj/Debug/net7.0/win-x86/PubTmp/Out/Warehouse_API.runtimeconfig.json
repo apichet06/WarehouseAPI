@@ -4,11 +4,11 @@
     "includedFrameworks": [
       {
         "name": "Microsoft.NETCore.App",
-        "version": "7.0.14"
+        "version": "7.0.15"
       },
       {
         "name": "Microsoft.AspNetCore.App",
-        "version": "7.0.14"
+        "version": "7.0.15"
       }
     ],
     "configProperties": {

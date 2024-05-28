@@ -317,7 +317,7 @@ D:\Apichet\Warehouse_API\obj\Debug\net7.0\win-x86\PubTmp\Out\createdump.exe
 D:\Apichet\Warehouse_API\obj\Debug\net7.0\win-x86\PubTmp\Out\hostfxr.dll
 D:\Apichet\Warehouse_API\obj\Debug\net7.0\win-x86\PubTmp\Out\hostpolicy.dll
 D:\Apichet\Warehouse_API\obj\Debug\net7.0\win-x86\PubTmp\Out\mscordaccore.dll
-D:\Apichet\Warehouse_API\obj\Debug\net7.0\win-x86\PubTmp\Out\mscordaccore_x86_x86_7.0.1423.51910.dll
+D:\Apichet\Warehouse_API\obj\Debug\net7.0\win-x86\PubTmp\Out\mscordaccore_x86_x86_7.0.1523.57226.dll
 D:\Apichet\Warehouse_API\obj\Debug\net7.0\win-x86\PubTmp\Out\mscordbi.dll
 D:\Apichet\Warehouse_API\obj\Debug\net7.0\win-x86\PubTmp\Out\mscorrc.dll
 D:\Apichet\Warehouse_API\obj\Debug\net7.0\win-x86\PubTmp\Out\msquic.dll
